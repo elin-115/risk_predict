@@ -39,4 +39,10 @@ fastapi dev main.py         # http://127.0.0.1:8000/docs
 | POST | `/users/login` | 로그인, JWT 발급 | - |
 | POST | `/health-profiles` | 건강 프로필 생성 | Bearer 토큰 |
 
-자세한 진행 과정은 [docs/진행상황.md](docs/진행상황.md) 참고.
+## 문서 (docs)
+| 문서 | 내용 | 보기 |
+|---|---|---|
+| [진행상황.md](docs/%EC%A7%84%ED%96%89%EC%83%81%ED%99%A9.md) | 전체 진행 현황, 단계별 구현 기록, 남은 작업 | GitHub에서 바로 보기 |
+| [day2_인증과_건강프로필.html](docs/day2_%EC%9D%B8%EC%A6%9D%EA%B3%BC_%EA%B1%B4%EA%B0%95%ED%94%84%EB%A1%9C%ED%95%84.html) | 2일차 정리: 회원가입·로그인·JWT 인증, 건강 프로필 테이블, 에러 기록 | [웹페이지로 보기](https://raw.githack.com/elin-115/risk_predict/main/docs/day2_%EC%9D%B8%EC%A6%9D%EA%B3%BC_%EA%B1%B4%EA%B0%95%ED%94%84%EB%A1%9C%ED%95%84.html) |
+
+> HTML 문서는 GitHub에서 코드로 보이므로 "웹페이지로 보기" 링크로 열거나, 내려받아 브라우저로 열면 된다.
