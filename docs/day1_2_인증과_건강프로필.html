@@ -340,7 +340,7 @@ def verify_user(auth_header = Depends(HTTPBearer())):   <span class="c"># "Beare
 <li>함수가 값을 계산만 하고 <b>return하지 않으면 None</b>이다. user id는 본문이 아니라 토큰의 <code>sub</code>에서</li>
 </ol>
 
-<h2 id="errors"><span class="n">!</span>우리가 만난 에러 기록</h2>
+<h2 id="errors"><span class="n">!</span>에러 기록</h2>
 <div class="tbl"><table>
 <tr><th>증상</th><th>원인</th><th>해결</th></tr>
 <tr><td><code>TypeError: object function can't be used in 'await' expression</code></td><td><code>await init_db</code> 괄호 누락</td><td><code>await init_db()</code>. 함수를 호출해야 코루틴이 나오고, 그걸 await</td></tr>
