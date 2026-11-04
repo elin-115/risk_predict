@@ -32,8 +32,7 @@ class UserHealthProfile(Base):
         ForeignKey("user.id"), unique=True          # unique=True : 회원 1명당 프로필 1개
     )
 
-    # TODO: 컬럼 이름 오타 (ge -> age). 요청 양식(CreateHealthProfileRequest)은 age 를 씀
-    ge: Mapped[int] = mapped_column(Integer)                    # 나이
+    age: Mapped[int] = mapped_column(Integer)                   # 나이
     height_cm: Mapped[float] = mapped_column(Float)             # 키 (cm)
     weight_kg: Mapped[float] = mapped_column(Float)             # 몸무게 (kg)
     smoking: Mapped[bool] = mapped_column(Boolean)              # 흡연 여부

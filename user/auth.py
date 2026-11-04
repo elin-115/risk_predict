@@ -57,18 +57,16 @@ def create_access_token(user_id: int) -> str:
 # 토큰 검증 (서명이 맞는지, 만료되지 않았는지)
 def verify_access_token(access_token:str):
     try:
-        # TODO: 디코딩한 결과(payload)를 변수에 담아 return 해야
-        #       verify_user 에서 payload.get("sub") 를 쓸 수 있음 (지금은 None 반환)
-        jwt.decode(
-        jwt=access_token,
-        key=settings.jwt_secret_key, # 서명 확인
-        algorithms=["HS256"]
+        payload = jwt.decode(               # 토큰을 풀어 payload(dict)를 꺼냄
+            jwt=access_token,
+            key=settings.jwt_secret_key,    # 서명 확인
+            algorithms=["HS256"]
         )
     except jwt.DecodeError:
         raise HTTPException(status_code=401, detail="잘못된 토큰 형식입니다.")
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="만료된 토큰입니다.")
-    return
+    return payload
 
 # HTTP 헤더에 인증 토큰이 있는지 검증 -> 로그인한 사용자 id 반환
 # auth_header = {"Authorization": "Bearer xxxx"}
