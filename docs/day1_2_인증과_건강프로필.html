@@ -142,7 +142,7 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 2px solid var(--ink); 
 <header class="top">
   <p class="meta"><span><b>risk_predict</b></span><span>1~2일차 · 2026-11-03~04</span><span><a href="https://github.com/elin-115/risk_predict">github.com/elin-115/risk_predict</a></span></p>
   <h1>회원가입·로그인·JWT 인증, 그리고 건강 프로필 테이블</h1>
-  <p class="lede">키·몸무게·나이·흡연 여부로 비만·고혈압 위험을 예측하는 FastAPI 백엔드. 오늘은 예측에 앞서 "누가 보낸 건강 데이터인지" 알 수 있게 인증 흐름을 만들고, 그 데이터를 담을 테이블을 추가했다. 우리 코드에서 실제로 막혔던 부분과 고친 과정을 함께 적었다.</p>
+  <p class="lede">키·몸무게·나이·흡연 여부로 비만·고혈압 위험을 예측하는 FastAPI 백엔드. 오늘은 예측에 앞서 "누가 보낸 건강 데이터인지" 알 수 있게 인증 흐름을 만들고, 그 데이터를 담을 테이블을 추가했다. 코드에서 실제로 막혔던 부분과 고친 과정을 함께 적었다.</p>
 </header>
 
 <h2 id="status"><span class="n">00</span>진행 현황</h2>
@@ -261,7 +261,7 @@ def verify_password(plain_password: str, password_hash: str) -> bool:
 <div class="legend"><span class="h">헤더 {"alg":"HS256","typ":"JWT"}</span><span class="p">페이로드 {"sub":"1","exp":1794035000}</span><span class="s">서명 = HMAC(헤더.페이로드, 비밀 키)</span></div>
 <ul>
 <li><code>sub</code>는 토큰의 주인(user id). JWT 표준이라 <b>문자열</b>로 넣는다 → <code>str(user_id)</code></li>
-<li><code>exp</code>는 만료 시각(유닉스 초). 우리는 24시간. 없으면 영원히 쓸 수 있는 토큰이 된다</li>
+<li><code>exp</code>는 만료 시각(유닉스 초). 이 프로젝트는 24시간. 없으면 영원히 쓸 수 있는 토큰이 된다</li>
 <li>헤더·페이로드는 <b>Base64 인코딩</b>일 뿐이라 누구나 풀어 볼 수 있다. 비밀번호나 개인정보는 넣지 않는다</li>
 <li>대신 <b>서명</b>은 비밀 키 없이는 만들 수 없다. <code>sub</code>만 바꿔 위조해도 서명이 맞지 않아 거절된다</li>
 </ul>
@@ -326,7 +326,7 @@ def verify_user(auth_header = Depends(HTTPBearer())):   <span class="c"># "Beare
     exercise_per_week: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())</code></pre>
 <ul>
-<li><code>ForeignKey("user.id")</code>에는 클래스 이름이 아니라 <code>__tablename__</code>을 쓴다. 우리 테이블 이름은 <code>user</code></li>
+<li><code>ForeignKey("user.id")</code>에는 클래스 이름이 아니라 <code>__tablename__</code>을 쓴다. 이 프로젝트의 테이블 이름은 <code>user</code></li>
 <li><code>unique=True</code>로 1:1 관계(마지막 상태만 유지). 측정 기록을 쌓아 그래프를 그리려면 unique를 빼고 1:N으로 간다</li>
 <li>요청 양식 <code>CreateHealthProfileRequest</code>에는 <code>user_id</code>가 없다. 토큰에서 꺼내니까</li>
 </ul>
