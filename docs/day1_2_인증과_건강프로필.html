@@ -279,7 +279,7 @@ def verify_password(plain_password: str, password_hash: str) -> bool:
     }
     return jwt.encode(payload=payload, key=settings.jwt_secret_key, algorithm="HS256")</code></pre>
 
-<h2 id="verify"><span class="n">07</span>토큰 검증: 우리가 놓쳤던 return</h2>
+<h2 id="verify"><span class="n">07</span>토큰 검증: 놓쳤던 return</h2>
 <p>건강 프로필 API는 <code>user_id = Depends(verify_user)</code> 한 줄로 "로그인한 사람만" 쓸 수 있게 했다. user id를 본문으로 받지 않는 이유는, 그러면 남의 id를 적어서 남의 프로필을 만들 수 있기 때문이다. 본문에는 건강 데이터만, 누구인지는 토큰의 <code>sub</code>로.</p>
 <div class="note bug"><span class="k">토큰을 넣었는데 500 에러</span>
 <p><code>jwt.decode()</code>가 푼 결과를 변수에 받지 않고 버려서, 함수가 <code>None</code>을 돌려줬다. 그다음 줄 <code>payload.get("sub")</code>에서 <code>None</code>에는 <code>.get</code>이 없으니 <code>AttributeError</code>가 났다.</p></div>
