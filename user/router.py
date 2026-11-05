@@ -5,11 +5,11 @@ from sqlalchemy import select
 
 from database.connection import get_session
 from user.auth import hash_password, verify_password, create_access_token, verify_user
-from user.model import User
+from user.model import User, UserHealthProfile
 from user.request import SignUpRequest, LogInRequest, CreateHealthProfileRequest
-from user.response import SignUpResponse, LogInResponse
+from user.response import SignUpResponse, LogInResponse, UserHealthProfileResponse
 
-router = APIRouter()
+router = APIRouter(tags=["User"])
 
 # ---------------------------------------------------------------
 # 회원가입 : 사용자 정보를 DB에 저장
@@ -89,12 +89,30 @@ async def login_handler(
     "/health-profiles",
     summary="건강 프로필 생성 API",
     status_code=201,
-    #response_model=LogInResponse,      # TODO: 프로필 응답 양식 만들어서 지정
+    response_model=UserHealthProfileResponse,      # 프로필 응답 양식 만들어서 지정
 )
 async def create_user_health_profile_handler(
     body: CreateHealthProfileRequest,   # 나이, 키, 몸무게, 흡연, 운동 횟수
     session = Depends(get_session),
     user_id = Depends(verify_user),     # 헤더에 JWT 토큰을 요구하도록 명시 -> 토큰의 사용자 id
 ):
-    # TODO: 프로필 중복 확인 -> UserHealthProfile 저장 -> 응답
-    return {"user_id": user_id}
+    # [1] 프로필 중복 확인
+    stmt = (
+        select(UserHealthProfile)
+        .where(UserHealthProfile.user_id == user_id)
+    )
+    result = await session.execute(stmt)
+    profile = result.scalar()
+    if profile:
+        raise HTTPException(
+            status_code=409, detail="이미 건강 프로필이 존재합니다."
+        )
+
+    # [2] UserHealthProfile 저장 -> 응답
+    profile_data = body.model_dump()    # 딕셔너리로 바꿔줌
+    new_profile = UserHealthProfile(user_id=user_id, **profile_data)
+    session.add(new_profile)
+    await session.commit()
+    await session.refresh(new_profile)
+
+    return new_profile
